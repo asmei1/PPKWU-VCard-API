@@ -48,15 +48,11 @@ def generate_worker_vcard(link):
 
     email = prepare_worker_property(details.find("a", class_="addax-cs_ip_mod_send_email"))
     phone = prepare_worker_property(details.find("a", class_="addax-cs_ip_phonenumber_click"))
+    website = prepare_worker_property(details.find("a", {"target": "_blank"}))
 
-    print(email)
-    print(phone)
     return company_name
 
 
-d = generate_worker_vcard("https://panoramafirm.pl/ma%C5%82opolskie,wielicki,grab%C3%B3wki,12/kamil_przeczek-scbeti_fhm.html")
-print(d)
 
-#
-# if __name__ == '__main__':
-#     app.run()
+if __name__ == '__main__':
+    app.run()
