@@ -26,6 +26,17 @@ def get_list_with_workers_vcards(name):
 
     return {"Hello": "World"}
 
+def prepare_worker_property(property):
+    p = property
+    if not p:
+        p = None
+    else:
+        p = p.text.strip()
+        if p == "brak":
+            p = None
+
+    return p
+
 def generate_worker_vcard(link):
     if not link:
         return {}, 400
@@ -35,22 +46,11 @@ def generate_worker_vcard(link):
     company_name = soup.find("h1").text
     details = soup.find("div", class_="contact-data")
 
-    email = details.find("a", class_="addax-cs_ip_mod_send_email")
-    if not email:
-        email = None
-    else:
-        email = email.text.strip()
-        if email == "brak":
-            email = None
+    email = prepare_worker_property(details.find("a", class_="addax-cs_ip_mod_send_email"))
+    phone = prepare_worker_property(details.find("a", class_="addax-cs_ip_phonenumber_click"))
 
-    phone = details.find("a", class_="addax-addax-cs_ip_phonenumber_click")
-    if not phone:
-        phone = None
-    else:
-        phone = phone.text.strip()
-        if phone == "brak":
-            phone = None
-
+    print(email)
+    print(phone)
     return company_name
 
 
