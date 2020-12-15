@@ -34,9 +34,15 @@ def generate_worker_vcard(link):
     soup = BeautifulSoup(page.content, "html.parser")
     company_name = soup.find("h1").text
     details = soup.find("div", class_="contact-data")
+    email = details.find("a", class_="addax-cs_ip_mod_send_email")
+    if not email:
+        email = None
+    else:
+        email = email.text.strip()
+        if email == "brak":
+            email = None
+
     return company_name
-
-
 
 if __name__ == '__main__':
     app.run()
