@@ -1,6 +1,7 @@
 from flask import Flask
 from bs4 import BeautifulSoup
 import requests
+import vobject
 
 app = Flask(__name__)
 
@@ -36,6 +37,26 @@ def generate_worker_properties(link):
 
 def generate_worker_vcard(link):
     company_name, email, phone, website = generate_worker_properties(link)
+    v = vobject.vCard()
+    v.add("n")
+    v.add("fn")
+    v.fn.value = company_name
+    if email:
+        v.add("email")
+        v.email.value = email
+        v.email.type_param = 'INTERNET'
+
+    if website:
+        v.add("website")
+        v.website.value = website
+        v.website.type_param = 'INTERNET'
+
+    if phone:
+        v.add("tel")
+        v.tel.value = phone
+        v.tel.type_param = 'VOICE'
+
+    return v.serialize()
 
 
 
