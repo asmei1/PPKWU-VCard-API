@@ -34,6 +34,7 @@ def generate_worker_vcard(link):
     soup = BeautifulSoup(page.content, "html.parser")
     company_name = soup.find("h1").text
     details = soup.find("div", class_="contact-data")
+
     email = details.find("a", class_="addax-cs_ip_mod_send_email")
     if not email:
         email = None
@@ -42,7 +43,20 @@ def generate_worker_vcard(link):
         if email == "brak":
             email = None
 
+    phone = details.find("a", class_="addax-addax-cs_ip_phonenumber_click")
+    if not phone:
+        phone = None
+    else:
+        phone = phone.text.strip()
+        if phone == "brak":
+            phone = None
+
     return company_name
 
-if __name__ == '__main__':
-    app.run()
+
+d = generate_worker_vcard("https://panoramafirm.pl/ma%C5%82opolskie,wielicki,grab%C3%B3wki,12/kamil_przeczek-scbeti_fhm.html")
+print(d)
+
+#
+# if __name__ == '__main__':
+#     app.run()
