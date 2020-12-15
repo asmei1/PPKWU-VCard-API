@@ -7,7 +7,10 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+python-dateutil==2.8.1
 requests==2.25.0
+six==1.15.0
 soupsieve==2.1
 urllib3==1.26.2
+vobject==0.9.6.1
 Werkzeug==1.0.1
