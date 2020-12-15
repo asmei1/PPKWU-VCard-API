@@ -13,7 +13,7 @@ def string_api(name):
 
     page = requests.get(BASE_URL + name)
     soup = BeautifulSoup(page.content, "html.parser")
-    
+    links_to_companies = soup.find_all("a")
 
     return {"Hello": "World"}
 
