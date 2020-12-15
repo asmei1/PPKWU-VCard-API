@@ -4,11 +4,12 @@ import requests
 
 app = Flask(__name__)
 
+SERVER_URL = "https://localhost/"
 BASE_URL = "https://panoramafirm.pl/szukaj?k="
 
 
-@app.route('/get_list_of_workers/<name>', methods=["GET"])
-def string_api(name):
+@app.route('/get_list_workers_vcards/<name>', methods=["GET"])
+def get_list_with_workers_vcards(name):
     if not name:
         return {}, 400
 
