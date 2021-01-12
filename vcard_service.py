@@ -114,8 +114,11 @@ def get_worker_vcard():
 def parse_and_produce_workers():
     companies = []
     name = request.args.get('name', "")
-
     page_count = request.args.get('page_count', 1)
+
+    if not name or page_count < 0:
+        return {}, 400
+
     for i in range(1, page_count + 1):
         url = BASE_URL + name + "/firmy," + str(i)
         page = requests.get(url)
