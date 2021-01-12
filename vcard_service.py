@@ -36,11 +36,14 @@ def generate_worker_properties(link):
     website = details.find(text=re.compile(r'\b({0})\b'.format("Strona www"), flags=re.IGNORECASE))
     if website:
         website = prepare_worker_property(website.findNext('div'))
+    social_media = details.find(text=re.compile(r'\b({0})\b'.format("Media społecznościowe"), flags=re.IGNORECASE))
+    if social_media:
+        social_media = prepare_worker_property(social_media.findNext('div'))
 
-    return company_name, email, phone, website
+    return company_name, email, phone, website, social_media
 
 def generate_worker_vcard(link):
-    company_name, email, phone, website = generate_worker_properties(link)
+    company_name, email, phone, website, social_media = generate_worker_properties(link)
     v = vobject.vCard()
     v.add("n")
     v.add("fn")
@@ -59,6 +62,11 @@ def generate_worker_vcard(link):
         v.add("tel")
         v.tel.value = phone
         v.tel.type_param = 'VOICE'
+
+    if social_media:
+        v.add("url")
+        v.url.value = social_media
+        # v.url.type_param = 'INTERNET'
 
     return v.serialize()
 
