@@ -1,6 +1,6 @@
 import re
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from bs4 import BeautifulSoup
 import requests
 import vobject
@@ -71,7 +71,10 @@ def get_worker_vcard():
     page = request.args.get('page')
 
     vCard = generate_worker_vcard(page)
-    return {"vcard", jsonify(vCard)}
+
+    import io
+    f = io.BytesIO(str.encode(vCard))
+    return send_file(f, mimetype="text/x-vcard")
 
 
 
