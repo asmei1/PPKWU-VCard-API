@@ -22,6 +22,21 @@ def prepare_worker_property(property):
 
     return p
 
+def parse_address(property):
+    if not property:
+        return None
+
+    tokens = property.split(",")
+    if len(tokens) != 2:
+        return None
+
+    street = tokens[0]
+    postal_code, *city, region = tokens[1].split(" ")
+    city = " ".join(city)
+
+    return street.strip(), postal_code.strip(), city.strip(), region.strip()
+
+
 def generate_worker_properties(link):
     if not link:
         return {}, 400
@@ -70,8 +85,18 @@ def generate_worker_vcard(link):
 
     if address:
         v.add("adr")
-        v.adr.value = address
-
+        adr = parse_address(address)
+        if adr:
+            v.add("adr")
+            v.adr.value = vobject.vcard.Address(
+                street=adr[0] or '',
+                city=adr[2] or '',
+                region=adr[3] or '',
+                code=adr[2] or '',
+                country='',
+                box='',
+                extended=''
+            )
     return v.serialize()
 
 @app.route('/get_worker_vcard', methods=["GET"])
