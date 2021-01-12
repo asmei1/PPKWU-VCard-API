@@ -8,7 +8,7 @@ import vobject
 app = Flask(__name__)
 
 SERVER_URL = "https://localhost/"
-BASE_URL = "https://panoramafirm.pl/szukaj?k="
+BASE_URL = "https://panoramafirm.pl/"
 
 
 def prepare_worker_property(property):
@@ -114,7 +114,7 @@ def get_worker_vcard():
 def parse_and_produce_workers():
     companies = []
     name = request.args.get('name', "")
-    
+
     page_count = request.args.get('page_count', 1)
     for i in range(1, page_count + 1):
         url = BASE_URL + name + "/firmy," + str(i)
