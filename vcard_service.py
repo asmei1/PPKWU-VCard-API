@@ -114,9 +114,10 @@ def get_worker_vcard():
 def parse_and_produce_workers():
     companies = []
     name = request.args.get('name', "")
-    page_count = request.args.get('page_count', 1)
+    page_count = int(request.args.get('page_count', "1"))
+    limit = int(request.args.get('limit', "20"))
 
-    if not name or page_count < 0:
+    if not name or page_count < 0 or limit < 1:
         return {}, 400
 
     for i in range(1, page_count + 1):
@@ -124,6 +125,8 @@ def parse_and_produce_workers():
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
         companies += [(a.text.strip(), a['href']) for a in soup.find_all("a", class_="company-name")]
+
+    companies = companies[:limit]
 
     return render_template('worker_list.html', name=name, companies=companies)
 
