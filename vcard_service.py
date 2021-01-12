@@ -51,22 +51,18 @@ def generate_worker_vcard(link):
     if email:
         v.add("email")
         v.email.value = email
-        v.email.type_param = 'INTERNET'
 
     if website:
         v.add("website")
         v.website.value = website
-        v.website.type_param = 'INTERNET'
 
     if phone:
         v.add("tel")
         v.tel.value = phone
-        v.tel.type_param = 'VOICE'
 
     if social_media:
         v.add("url")
         v.url.value = social_media
-        # v.url.type_param = 'INTERNET'
 
     return v.serialize()
 
