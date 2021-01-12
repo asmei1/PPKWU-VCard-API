@@ -1,3 +1,5 @@
+import re
+
 from flask import Flask, jsonify, request
 from bs4 import BeautifulSoup
 import requests
@@ -31,7 +33,9 @@ def generate_worker_properties(link):
 
     email = prepare_worker_property(details.find("a", class_="addax-cs_ip_mod_send_email"))
     phone = prepare_worker_property(details.find("a", class_="addax-cs_ip_phonenumber_click"))
-    website = prepare_worker_property(details.find("a", {"target": "_blank"}))
+    website = details.find(text=re.compile(r'\b({0})\b'.format("Strona www"), flags=re.IGNORECASE))
+    if website:
+        website = prepare_worker_property(website.findNext('div'))
 
     return company_name, email, phone, website
 
