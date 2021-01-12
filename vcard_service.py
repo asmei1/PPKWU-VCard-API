@@ -40,10 +40,14 @@ def generate_worker_properties(link):
     if social_media:
         social_media = prepare_worker_property(social_media.findNext('div'))
 
-    return company_name, email, phone, website, social_media
+    address = (soup.select_one('.address > div > div:nth-of-type(2)'))
+    if address:
+        address = address.text.strip()
+
+    return company_name, email, phone, website, social_media, address
 
 def generate_worker_vcard(link):
-    company_name, email, phone, website, social_media = generate_worker_properties(link)
+    company_name, email, phone, website, social_media, address = generate_worker_properties(link)
     v = vobject.vCard()
     v.add("n")
     v.add("fn")
@@ -63,6 +67,10 @@ def generate_worker_vcard(link):
     if social_media:
         v.add("url")
         v.url.value = social_media
+
+    if address:
+        v.add("adr")
+        v.adr.value = address
 
     return v.serialize()
 
