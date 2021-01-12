@@ -22,6 +22,7 @@ def prepare_worker_property(property):
 
     return p
 
+
 def parse_address(property):
     if not property:
         return None
@@ -61,6 +62,7 @@ def generate_worker_properties(link):
 
     return company_name, email, phone, website, social_media, address
 
+
 def generate_worker_vcard(link):
     company_name, email, phone, website, social_media, address = generate_worker_properties(link)
     v = vobject.vCard()
@@ -99,6 +101,7 @@ def generate_worker_vcard(link):
             )
     return v.serialize()
 
+
 @app.route('/get_worker_vcard', methods=["GET"])
 def get_worker_vcard():
     page = request.args.get('page')
@@ -129,6 +132,7 @@ def parse_and_produce_workers():
     companies = companies[:limit]
 
     return render_template('worker_list.html', name=name, companies=companies)
+
 
 if __name__ == '__main__':
     app.run()
