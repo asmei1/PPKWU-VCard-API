@@ -1,6 +1,6 @@
 import re
 
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, render_template
 from bs4 import BeautifulSoup
 import requests
 import vobject
@@ -110,7 +110,17 @@ def get_worker_vcard():
     return send_file(f, mimetype="text/x-vcard")
 
 
+@app.route('/parse_and_produce_workers', methods=["GET"])
+def parse_and_produce_workers():
+    companies = []
+    name = request.args.get('name', "")
 
+    url = BASE_URL + name
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    companies = [a['href'] for a in soup.find_all("a", class_="company-name")]
+
+    return render_template('worker_list.html', name=name)
 
 if __name__ == '__main__':
     app.run()
