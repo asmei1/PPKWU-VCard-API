@@ -114,13 +114,15 @@ def get_worker_vcard():
 def parse_and_produce_workers():
     companies = []
     name = request.args.get('name', "")
+    
+    page_count = request.args.get('page_count', 1)
+    for i in range(1, page_count + 1):
+        url = BASE_URL + name + "/firmy," + str(i)
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, "html.parser")
+        companies += [(a.text.strip(), a['href']) for a in soup.find_all("a", class_="company-name")]
 
-    url = BASE_URL + name
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser")
-    companies = [a['href'] for a in soup.find_all("a", class_="company-name")]
-
-    return render_template('worker_list.html', name=name)
+    return render_template('worker_list.html', name=name, companies=companies)
 
 if __name__ == '__main__':
     app.run()
