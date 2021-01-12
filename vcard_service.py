@@ -66,9 +66,11 @@ def generate_worker_properties(link):
 def generate_worker_vcard(link):
     company_name, email, phone, website, social_media, address = generate_worker_properties(link)
     v = vobject.vCard()
-    v.add("n")
     v.add("fn")
     v.fn.value = company_name
+    v.add("n")
+    v.n.value = vobject.vcard.Name(given=company_name)
+
     if email:
         v.add("email")
         v.email.value = email
