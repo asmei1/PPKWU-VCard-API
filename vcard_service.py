@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from bs4 import BeautifulSoup
 import requests
 import vobject
@@ -58,7 +58,12 @@ def generate_worker_vcard(link):
 
     return v.serialize()
 
+@app.route('/get_worker_vcard', methods=["GET"])
+def get_worker_vcard():
+    page = request.args.get('page')
 
+    vCard = generate_worker_vcard(page)
+    return {"vcard", jsonify(vCard)}
 
 @app.route('/get_list_workers_vcards/<name>', methods=["GET"])
 def get_list_with_workers_vcards(name):
